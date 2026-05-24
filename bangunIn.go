@@ -177,7 +177,7 @@ func tambahDataSupplier(db *DatabaseSUpplier, jumlahData *int) {
 	fmt.Println("=====================================================")
 
 	db[*jumlahData].ID = *jumlahData + 1
-	fmt.Print("ID Supplier: %d\n", db[*jumlahData].ID)
+	fmt.Printf("ID Supplier: %d\n", db[*jumlahData].ID)
 
 	fmt.Print("Nama Perusahaan: ")
 	fmt.Scan(&db[*jumlahData].NamaPT)
@@ -209,22 +209,22 @@ func ubahDataSupplier(db *DatabaseSUpplier, jumlahData int) {
 
 }
 
-func hapusDataSupplier() {
+func hapusDataSupplier(db *DatabaseSUpplier, jumlahData *int) {
 
 }
 
-func tampilkanDataSupplier() {
+func tampilkanDataSupplier(db DatabaseSUpplier, jumlahData int) {
 
 }
 
-func pencarianDataSupplier() {
+func pencarianDataSupplier(db DatabaseSUpplier, jumlahData int) {
 
 }
 
-func pengurutanDataSupplier() {
+func pengurutanDataSupplier(db *DatabaseSUpplier, jumlahData int) {
 
 }
 
-func tampilkanStatistik() {
+func tampilkanStatistik(db DatabaseSUpplier, jumlahData int) {
 
 }
