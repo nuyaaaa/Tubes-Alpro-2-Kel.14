@@ -58,3 +58,31 @@ func menuUtama() {
 		menuUtama()
 	}
 }
+
+func tambahDataSupplier() {
+
+}
+
+func ubahDataSupplier() {
+
+}
+
+func hapusDataSupplier() {
+
+}
+
+func tampilkanDataSupplier() {
+
+}
+
+func pencarianDataSupplier() {
+
+}
+
+func pengurutanDataSupplier() {
+
+}
+
+func tampilkanStatistik() {
+
+}
