@@ -45,76 +45,76 @@ func isiDataDummy(db *DatabaseSUpplier, jumlahData *int) {
 	}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"},layanan{ "Semen", 4.5, 16}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{2, "PT_Baja_Utama", kontak{"021-555-234", "info@bajautama.com", "Jakarta"}, layanan{"Baja", 4.7, 60}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{3, "PT_Kayu_Abadi", kontak{"022-444-123", "sales@kayuabadi.com", "Bandung"}, layanan{"Kayu", 4.5, 30}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{4, "PT_Pasir_Mas", kontak{"031-333-123", "admin@pasirmas.com", "Surabaya"}, layanan{"Pasir", 4.6, 80}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{5, "PT_Bata_Merah", kontak{"024-222-123", "halo@batamerah.com", "Semarang"}, layanan{"Bata", 4.4, 110}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{6, "PT_Cat_Cerah", kontak{"061-666-123", "order@catcerah.com", "Medan"}, layanan{"Cat", 4.9, 150}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{7, "PT_Keramik_Indah", kontak{"021-555-789", "cs@keramikindah.com", "Tangerang"}, layanan{"Keramik", 4.3, 40}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{8, "PT_Besi_Kokoh", kontak{"021-888-123", "marketing@besikokoh.com", "Bekasi"}, layanan{"Besi", 4.7, 95}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{9, "PT_Pipa_Aliran", kontak{"021-777-123", "pipa@aliran.com", "Depok"}, layanan{"Pipa", 4.5, 75}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{10, "PT_Genteng_Kuat", kontak{"0251-333-444", "support@gentengkuat.com", "Bogor"}, layanan{"Genteng", 4.6, 55}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{11, "PT_Kabel_Nusantara", kontak{"021-555-999", "kabel@nusantara.com", "Jakarta"}, layanan{"Kabel", 4.9, 200}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{12, "PT_Kaca_Bening", kontak{"031-333-777", "sales@kacabening.com", "Surabaya"}, layanan{"Kaca", 4.4, 35}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{13, "PT_Paku_Bumi", kontak{"061-666-888", "paku@bumi.com", "Medan"}, layanan{"Paku", 4.2, 120}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{14, "PT_Beton_Perkasa", kontak{"0411-444-555", "beton@perkasa.com", "Makassar"}, layanan{"Beton", 4.8, 180}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{15, "PT_Aluminium_Jaya", kontak{"0711-333-222", "alum@jaya.com", "Palembang"}, layanan{"Aluminium", 4.5, 65}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{16, "PT_Semen_Sentosa", kontak{"031-398-111", "info@semensentosa.com", "Gresik"}, layanan{"Semen", 4.7, 140}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{17, "PT_Baja_Sakti", kontak{"0254-333-222", "baja@sakti.com", "Cilegon"}, layanan{"Baja", 4.6, 85}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{18, "PT_Kayu_Lestari", kontak{"024-354-111", "kontak@kayulestari.com", "Semarang"}, layanan{"Kayu", 4.4, 50}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{19, "PT_Pasir_Putih", kontak{"0721-444-333", "pasir@putih.com", "Lampung"}, layanan{"Pasir", 4.3, 70}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{20, "PT_Bata_Ringan", kontak{"031-894-111", "bata@ringan.com", "Sidoarjo"}, layanan{"Bata", 4.7, 130}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{21, "PT_Cat_Utama", kontak{"031-532-444", "sales@catutama.com", "Surabaya"}, layanan{"Cat", 4.5, 90}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{22, "PT_Keramik_Mulia", kontak{"021-296-444", "mulia@keramik.com", "Jakarta"}, layanan{"Keramik", 4.8, 165}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{23, "PT_Besi_Baja", kontak{"022-601-222", "admin@besibaja.com", "Bandung"}, layanan{"Besi", 4.6, 105}}
 	*jumlahData++
 
-	db[*jumlahData] = supplier{}
+	db[*jumlahData] = supplier{24, "PT_Pipa_Jaya", kontak{"021-824-111", "info@pipajaya.com", "Bekasi"}, layanan{"Pipa", 4.4, 55}}
 	*jumlahData++
 }
 
