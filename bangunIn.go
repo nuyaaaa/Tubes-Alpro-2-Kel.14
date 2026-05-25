@@ -116,6 +116,10 @@ func isiDataDummy(db *DatabaseSUpplier, jumlahData *int) {
 
 	db[*jumlahData] = supplier{24, "PT_Pipa_Jaya", kontak{"021-824-111", "info@pipajaya.com", "Bekasi"}, layanan{"Pipa", 4.4, 55}}
 	*jumlahData++
+
+	db[*jumlahData] = supplier{25, "PT_Genteng_Metal", kontak{"0264-201-222", "metal@genteng.com", "Purwakarta"}, layanan{"Genteng", 4.5, 40}}
+	*jumlahData++
+
 }
 
 func menuUtama(db *DatabaseSUpplier, jumlahData *int) bool {
