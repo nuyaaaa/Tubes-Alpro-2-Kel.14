@@ -40,12 +40,7 @@ func main() {
 }
 
 func isiDataDummy(db *DatabaseSUpplier, jumlahData *int) {
-	db[*jumlahData] = supplier{
-		//cara ngisinya ikut template ini {1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"},layanan{ "Semen", 4.5, 16}}
-	}
-	*jumlahData++
-
-	db[*jumlahData] = supplier{1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"},layanan{ "Semen", 4.5, 16}}
+	db[*jumlahData] = supplier{1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"}, layanan{"Semen", 4.5, 16}}
 	*jumlahData++
 
 	db[*jumlahData] = supplier{2, "PT_Baja_Utama", kontak{"021-555-234", "info@bajautama.com", "Jakarta"}, layanan{"Baja", 4.7, 60}}
