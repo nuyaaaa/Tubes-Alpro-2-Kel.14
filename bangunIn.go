@@ -27,7 +27,6 @@ func main() {
 	var db DatabaseSUpplier
 	var jumlahData int = 0
 
-	//paggil data dummy
 	isiDataDummy(&db, &jumlahData)
 
 	for {
@@ -205,15 +204,85 @@ func tambahDataSupplier(db *DatabaseSUpplier, jumlahData *int) {
 }
 
 func ubahDataSupplier(db *DatabaseSUpplier, jumlahData int) {
+	if jumlahData == 0 {
+		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa diubah.")
+		return
+	}
 
+	var idCari int
+	fmt.Print("\nMasukkan ID Supplier yang ingin diubah: ")
+	fmt.Scan(&idCari)
+
+	var idxFound int = -1
+	for i := 0; i < jumlahData; i++ {
+		if db[i].ID == idCari {
+			idxFound = i
+			break
+		}
+	}
+
+	if idxFound == -1 {
+		fmt.Println("\n[GAGAL] Data supplier dengan ID tersebut tidak ditemukan.")
+		return
+	}
+
+	fmt.Println("\n=====================================================")
+	fmt.Printf("           UBAH DATA SUPPLIER (ID: %d)               \n", idCari)
+	fmt.Println("=====================================================")
+
+	fmt.Print("Nama Perusahaan Baru: ")
+	fmt.Scan(&db[idxFound].NamaPT)
+
+	fmt.Print("Nomor Telepon Baru: ")
+	fmt.Scan(&db[idxFound].DetailKontak.Telepon)
+
+	fmt.Print("Email Baru: ")
+	fmt.Scan(&db[idxFound].DetailKontak.Email)
+
+	fmt.Print("Lokasi Baru: ")
+	fmt.Scan(&db[idxFound].DetailKontak.Lokasi)
+
+	fmt.Print("Jenis Material Baru: ")
+	fmt.Scan(&db[idxFound].DetailLayanan.JenisMaterial)
+
+	fmt.Print("Rating Baru (0.0 - 5.0): ")
+	fmt.Scan(&db[idxFound].DetailLayanan.Rating)
+
+	fmt.Print("Riwayat Order Baru: ")
+	fmt.Scan(&db[idxFound].DetailLayanan.RiwayatOrder)
+
+	fmt.Println("\n[BERHASIL] Data supplier berhasil diubah!")
 }
+
 
 func hapusDataSupplier(db *DatabaseSUpplier, jumlahData *int) {
 
 }
 
 func tampilkanDataSupplier(db DatabaseSUpplier, jumlahData int) {
+	if jumlahData == 0 {
+		fmt.Println("\n[INFO] Data supplier masih kosong.")
+		return
+	}
 
+	fmt.Println("\n=======================================================================================================================================")
+	fmt.Printf("%-5s | %-20s | %-15s | %-25s | %-15s | %-15s | %-6s | %-15s\n", "ID", "Nama PT", "Telepon", "Email", "Lokasi", "Jenis Material", "Rating", "Riwayat Order")
+	fmt.Println("---------------------------------------------------------------------------------------------------------------------------------------")
+
+	for i := 0; i < jumlahData; i++ {
+		s := db[i]
+		fmt.Printf("%-5d | %-20s | %-15s | %-25s | %-15s | %-15s | %-6.1f | %-15d\n",
+			s.ID,
+			s.NamaPT,
+			s.DetailKontak.Telepon,
+			s.DetailKontak.Email,
+			s.DetailKontak.Lokasi,
+			s.DetailLayanan.JenisMaterial,
+			s.DetailLayanan.Rating,
+			s.DetailLayanan.RiwayatOrder,
+		)
+	}
+	fmt.Println("=======================================================================================================================================")
 }
 
 func pencarianDataSupplier(db DatabaseSUpplier, jumlahData int) {
