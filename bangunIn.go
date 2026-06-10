@@ -206,7 +206,8 @@ func ubahDataSupplier(db *DatabaseSupplier, n int) {
 }
 
 func hapusDataSupplier(db *DatabaseSupplier, n *int) {
-	var cariID, idx int
+	var cariID, idx, i int
+	var ketemu bool
 
 	if *n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa dihapus.")
@@ -219,11 +220,14 @@ func hapusDataSupplier(db *DatabaseSupplier, n *int) {
 	fmt.Scan(&cariID)
 
 	idx = -1
-	for i := 0; i < *n; i++ {
+	ketemu = false
+	i = 0
+	for i < *n && !ketemu {
 		if db[i].ID == cariID {
 			idx = i
-			return
+			ketemu = true
 		}
+		i++
 	}
 
 	if idx == -1 {
@@ -351,7 +355,8 @@ func prioritas(kandidat, pembanding supplier) bool {
 
 func tampilkanStatistik(db DatabaseSupplier, n int) {
 	var totalRating float64 = 0
-	var avgRating, idxWilayah int
+	var avgRating float64
+	var idxWilayah int
 	var wilayahUnik [NMAX]string
 	var jumlahPerWilayah [NMAX]int
 	var jumlahWilayahUnik int = 0
@@ -365,19 +370,21 @@ func tampilkanStatistik(db DatabaseSupplier, n int) {
 	for i := 0; i < n; i++ {
 		totalRating = totalRating + db[i].DetailLayanan.Rating
 	}
-	avgRating = int(totalRating / float64(n))
-	fmt.Printf("Rata-rata Skor Rating Mitra: %d\n", avgRating)
+	avgRating = totalRating / float64(n)
+	fmt.Printf("Rata-rata Skor Rating Mitra: %.2f\n", avgRating)
 
 	for i := 0; i < n; i++ {
 		lokasiSupplier = db[i].DetailKontak.Lokasi
 		ada = false
 		idxWilayah = -1
 
-		for j := 0; j < jumlahWilayahUnik && !ada; j++ {
+		j := 0
+		for j < jumlahWilayahUnik && !ada {
 			if wilayahUnik[j] == lokasiSupplier {
 				ada = true
 				idxWilayah = j
 			}
+			j++
 		}
 
 		if ada {
