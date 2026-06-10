@@ -88,8 +88,17 @@ func menuUtama(db *DatabaseSupplier, n *int) bool {
 	fmt.Println("7. Tampilkan Statistik Wilayah & Kepuasan Mitra")
 	fmt.Println("8. Keluar")
 	fmt.Println("=====================================================")
-	fmt.Println("Pilih menu (1-8): ")
-	fmt.Scanln(&input)
+	fmt.Print("Pilih menu (1-8): ") 
+
+	_, err := fmt.Scan(&input)
+
+	if err != nil {
+		var sapuBuffer string
+		fmt.Scanln(&sapuBuffer) 
+		
+		fmt.Println("Pilihan tidak valid. Silakan masukkan angka.")
+		return true 
+	}
 
 	switch input {
 	case 1:
@@ -165,10 +174,11 @@ func ubahDataSupplier(db *DatabaseSupplier, n int) {
 	fmt.Scan(&idCari)
 
 	var idxFound int = -1
-	for i := 0; i < n; i++ {
+	
+	// Modifikasi di sini: loop otomatis berhenti jika idxFound tidak lagi -1
+	for i := 0; i < n && idxFound == -1; i++ {
 		if db[i].ID == idCari {
 			idxFound = i
-			break
 		}
 	}
 
