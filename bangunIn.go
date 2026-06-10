@@ -21,10 +21,10 @@ type supplier struct {
 	DetailLayanan layanan
 }
 
-type DatabaseSUpplier [NMAX]supplier
+type DatabaseSupplier [NMAX]supplier
 
 func main() {
-	var db DatabaseSUpplier
+	var db DatabaseSupplier
 	var n int = 0
 	var menu bool = true
 
@@ -35,7 +35,7 @@ func main() {
 	}
 }
 
-func isiDataDummy(db *DatabaseSUpplier, n *int) {
+func isiDataDummy(db *DatabaseSupplier, n *int) {
 	db[*n] = supplier{1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"}, layanan{"Semen", 4.5, 16}}
 	*n++
 
@@ -67,7 +67,7 @@ func isiDataDummy(db *DatabaseSUpplier, n *int) {
 	*n++
 }
 
-func menuUtama(db *DatabaseSUpplier, n *int) bool {
+func menuUtama(db *DatabaseSupplier, n *int) bool {
 	var input int
 
 	fmt.Println("_____________________________________________________")
@@ -115,7 +115,7 @@ func menuUtama(db *DatabaseSUpplier, n *int) bool {
 	return true
 }
 
-func tambahDataSupplier(db *DatabaseSUpplier, n *int) {
+func tambahDataSupplier(db *DatabaseSupplier, n *int) {
 	if *n >= NMAX {
 		fmt.Println("\n[GAGAL] PENUH EUY! Tidak dapat menambahkan data supplier baru.")
 		return
@@ -154,7 +154,7 @@ func tambahDataSupplier(db *DatabaseSUpplier, n *int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil ditambahkan!")
 }
 
-func ubahDataSupplier(db *DatabaseSUpplier, n int) {
+func ubahDataSupplier(db *DatabaseSupplier, n int) {
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa diubah.")
 		return
@@ -205,7 +205,7 @@ func ubahDataSupplier(db *DatabaseSUpplier, n int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil diubah!")
 }
 
-func hapusDataSupplier(db *DatabaseSUpplier, n *int) {
+func hapusDataSupplier(db *DatabaseSupplier, n *int) {
 	var cariID, idx int
 
 	if *n == 0 {
@@ -239,7 +239,7 @@ func hapusDataSupplier(db *DatabaseSUpplier, n *int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil dihapus!")
 }
 
-func tampilkanDataSupplier(db DatabaseSUpplier, n int) {
+func tampilkanDataSupplier(db DatabaseSupplier, n int) {
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong.")
 		return
@@ -252,27 +252,145 @@ func tampilkanDataSupplier(db DatabaseSUpplier, n int) {
 	for i := 0; i < n; i++ {
 		s := db[i]
 		fmt.Printf("%-5d | %-20s | %-15s | %-25s | %-15s | %-15s | %-6.1f | %-15d\n",
-			s.ID,
-			s.NamaPT,
-			s.DetailKontak.Telepon,
-			s.DetailKontak.Email,
-			s.DetailKontak.Lokasi,
-			s.DetailLayanan.JenisMaterial,
-			s.DetailLayanan.Rating,
-			s.DetailLayanan.RiwayatOrder,
+			s.ID, s.NamaPT, s.DetailKontak.Telepon, s.DetailKontak.Email, s.DetailKontak.Lokasi, s.DetailLayanan.JenisMaterial, s.DetailLayanan.Rating, s.DetailLayanan.RiwayatOrder,
 		)
 	}
 	fmt.Println("=======================================================================================================================================")
 }
 
-func pencarianDataSupplier(db DatabaseSUpplier, n int) {
+//sequntial search
+func pencarianDataSupplier(db DatabaseSupplier, n int) {
+	var pilihMetode int
+	var findData string
+	var found bool = false
+	if n == 0 {
+		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa dicari.")
+		return
+	}
 
+	fmt.Println("\n=====================================================")
+	fmt.Println(" 		         PENCARIAN DATA SUPPLIER              ")
+	fmt.Println("=====================================================")
+	fmt.Println("1. Cari berdasarkan Lokasi")
+	fmt.Println("2. Cari berdasarkan Jenis Material")
+	fmt.Println("Pilih metode pencarian (1-2): ")
+	fmt.Scan(&pilihMetode)
+
+	switch pilihMetode {
+	case 1:
+		fmt.Print("Masukkan Lokasi yang ingin dicari: ")
+		fmt.Scan(&findData)
+		fmt.Println("\n-- HASIL PENCARIAN --")
+
+		for i := 0; i < n; i++ {
+			if db[i].DetailKontak.Lokasi == findData {
+				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Jenis Material: %s | Rating: %.1f | Riwayat Order: %d\n",
+					db[i].ID, db[i].NamaPT, db[i].DetailKontak.Telepon, db[i].DetailKontak.Email, db[i].DetailLayanan.JenisMaterial, db[i].DetailLayanan.Rating, db[i].DetailLayanan.RiwayatOrder)
+				found = true
+			}
+		}
+
+		if !found {
+			fmt.Println("Data supplier dengan lokasi tersebut tidak ditemukan.")
+		}
+
+	case 2:
+		fmt.Print("Masukkan Jenis Material yang ingin dicari: ")
+		fmt.Scan(&findData)
+		fmt.Println("\n-- HASIL PENCARIAN --")
+
+		for i := 0; i < n; i++ {
+			if db[i].DetailLayanan.JenisMaterial == findData {
+				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Lokasi: %s | Rating: %.1f | Riwayat Order: %d\n",
+					db[i].ID, db[i].NamaPT, db[i].DetailKontak.Telepon, db[i].DetailKontak.Email, db[i].DetailKontak.Lokasi, db[i].DetailLayanan.Rating, db[i].DetailLayanan.RiwayatOrder)
+				found = true
+			}
+		}
+
+		if !found {
+			fmt.Println("Data supplier dengan jenis material tersebut tidak ditemukan.")
+		}
+	default:
+		fmt.Println("Pilihan metode pencarian tidak valid.")
+	}
 }
 
-func pengurutanDataSupplier(db *DatabaseSUpplier, n int) {
+//insertion desc
+func pengurutanDataSupplier(db *DatabaseSupplier, n int) {
+	var pass, i int
+	var temp supplier
 
+	if n == 0 {
+		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa diurutkan.")
+		return
+	}
+
+	pass = 1
+	for pass <= n-1 {
+		i = pass
+		temp = db[pass]
+
+		for i > 0 && prioritas(temp, db[i-1]) {
+			db[i] = db[i-1]
+			i--
+		}
+		db[i] = temp
+		pass++
+	}
+
+	fmt.Println("\n[BERHASIL] Data supplier berhasil diurutkan berdasarkan rating tertinggi")
+	tampilkanDataSupplier(*db, n)
 }
 
-func tampilkanStatistik(db DatabaseSUpplier, n int) {
+func prioritas(kandidat, pembanding supplier) bool {
+	if kandidat.DetailLayanan.Rating != pembanding.DetailLayanan.Rating {
+		return kandidat.DetailLayanan.Rating > pembanding.DetailLayanan.Rating
+	}
+	return kandidat.DetailLayanan.RiwayatOrder > pembanding.DetailLayanan.RiwayatOrder
+}
 
+func tampilkanStatistik(db DatabaseSupplier, n int) {
+	var totalRating float64 = 0
+	var avgRating, idxWilayah int
+	var wilayahUnik [NMAX]string
+	var jumlahPerWilayah [NMAX]int
+	var jumlahWilayahUnik int = 0
+	var lokasiSupplier string
+	var ada bool
+
+	fmt.Println("\n=====================================================")
+	fmt.Println("   	  STATISTIK WILAYAH & KEPUASAN MITRA          ")
+	fmt.Println("=====================================================")
+
+	for i := 0; i < n; i++ {
+		totalRating = totalRating + db[i].DetailLayanan.Rating
+	}
+	avgRating = int(totalRating / float64(n))
+	fmt.Printf("Rata-rata Skor Rating Mitra: %d\n", avgRating)
+
+	for i := 0; i < n; i++ {
+		lokasiSupplier = db[i].DetailKontak.Lokasi
+		ada = false
+		idxWilayah = -1
+
+		for j := 0; j < jumlahWilayahUnik && !ada; j++ {
+			if wilayahUnik[j] == lokasiSupplier {
+				ada = true
+				idxWilayah = j
+			}
+		}
+
+		if ada {
+			jumlahPerWilayah[idxWilayah]++
+		} else {
+			wilayahUnik[jumlahWilayahUnik] = lokasiSupplier
+			jumlahPerWilayah[jumlahWilayahUnik] = 1
+			jumlahWilayahUnik++
+		}
+	}
+
+	fmt.Println("\nJumlah Supplier per Wilayah:")
+	for i := 0; i < jumlahWilayahUnik; i++ {
+		fmt.Printf("- %s : %d supplier\n", wilayahUnik[i], jumlahPerWilayah[i])
+	}
 }
