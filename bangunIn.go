@@ -5,26 +5,26 @@ import "fmt"
 const NMAX int = 100
 
 type kontak struct {
-	Telepon, Email, Lokasi string
+	telepon, email, lokasi string
 }
 
 type layanan struct {
-	JenisMaterial string
-	Rating        float64
-	RiwayatOrder  int
+	jenisMaterial string
+	rating        float64
+	riwayatOrder  int
 }
 
 type supplier struct {
 	ID            int
-	NamaPT        string
-	DetailKontak  kontak
-	DetailLayanan layanan
+	namaPT        string
+	detailKontak  kontak
+	detailLayanan layanan
 }
 
-type DatabaseSupplier [NMAX]supplier
+type databaseSupplier [NMAX]supplier
 
 func main() {
-	var db DatabaseSupplier
+	var db databaseSupplier
 	var n int = 0
 	var menu bool = true
 
@@ -35,7 +35,8 @@ func main() {
 	}
 }
 
-func isiDataDummy(db *DatabaseSupplier, n *int) {
+//database yang dimiliki diawal
+func isiDataDummy(db *databaseSupplier, n *int) {
 	db[*n] = supplier{1, "PT_Cahaya", kontak{"021-098-010", "email@.com", "Jakarta"}, layanan{"Semen", 4.5, 16}}
 	*n++
 
@@ -67,7 +68,8 @@ func isiDataDummy(db *DatabaseSupplier, n *int) {
 	*n++
 }
 
-func menuUtama(db *DatabaseSupplier, n *int) bool {
+//tampilan untuk mengoperasikan program
+func menuUtama(db *databaseSupplier, n *int) bool {
 	var input int
 
 	fmt.Println("_____________________________________________________")
@@ -88,16 +90,16 @@ func menuUtama(db *DatabaseSupplier, n *int) bool {
 	fmt.Println("7. Tampilkan Statistik Wilayah & Kepuasan Mitra")
 	fmt.Println("8. Keluar")
 	fmt.Println("=====================================================")
-	fmt.Print("Pilih menu (1-8): ") 
+	fmt.Print("Pilih menu (1-8): ")
 
 	_, err := fmt.Scan(&input)
 
 	if err != nil {
 		var sapuBuffer string
-		fmt.Scanln(&sapuBuffer) 
-		
+		fmt.Scanln(&sapuBuffer)
+
 		fmt.Println("Pilihan tidak valid. Silakan masukkan angka.")
-		return true 
+		return true
 	}
 
 	switch input {
@@ -124,7 +126,8 @@ func menuUtama(db *DatabaseSupplier, n *int) bool {
 	return true
 }
 
-func tambahDataSupplier(db *DatabaseSupplier, n *int) {
+//menambahkan data baru ke database dengan jumlah maks 100
+func tambahDataSupplier(db *databaseSupplier, n *int) {
 	if *n >= NMAX {
 		fmt.Println("\n[GAGAL] PENUH EUY! Tidak dapat menambahkan data supplier baru.")
 		return
@@ -138,48 +141,51 @@ func tambahDataSupplier(db *DatabaseSupplier, n *int) {
 	fmt.Printf("ID Supplier: %d\n", db[*n].ID)
 
 	fmt.Print("Nama Perusahaan: ")
-	fmt.Scan(&db[*n].NamaPT)
+	fmt.Scan(&db[*n].namaPT)
 
 	fmt.Print("Nomor Telepon: ")
-	fmt.Scan(&db[*n].DetailKontak.Telepon)
+	fmt.Scan(&db[*n].detailKontak.telepon)
 
 	fmt.Print("Email: ")
-	fmt.Scan(&db[*n].DetailKontak.Email)
+	fmt.Scan(&db[*n].detailKontak.email)
 
 	fmt.Print("Lokasi: ")
-	fmt.Scan(&db[*n].DetailKontak.Lokasi)
+	fmt.Scan(&db[*n].detailKontak.lokasi)
 
 	fmt.Print("Jenis Material: ")
-	fmt.Scan(&db[*n].DetailLayanan.JenisMaterial)
+	fmt.Scan(&db[*n].detailLayanan.jenisMaterial)
 
 	fmt.Print("Rating (0.0 - 5.0): ")
-	fmt.Scan(&db[*n].DetailLayanan.Rating)
+	fmt.Scan(&db[*n].detailLayanan.rating)
 
 	fmt.Print("Riwayat Order: ")
-	fmt.Scan(&db[*n].DetailLayanan.RiwayatOrder)
+	fmt.Scan(&db[*n].detailLayanan.riwayatOrder)
 
 	*n++
 
 	fmt.Println("\n[BERHASIL] Data supplier berhasil ditambahkan!")
 }
 
-func ubahDataSupplier(db *DatabaseSupplier, n int) {
+//mengubah data supplier yang sudah ada berdasarkan id
+func ubahDataSupplier(db *databaseSupplier, n int) {
+	var idCari, i int
+	var idxFound int
+
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa diubah.")
 		return
 	}
 
-	var idCari int
 	fmt.Print("\nMasukkan ID Supplier yang ingin diubah: ")
 	fmt.Scan(&idCari)
 
-	var idxFound int = -1
-	
-	// Modifikasi di sini: loop otomatis berhenti jika idxFound tidak lagi -1
-	for i := 0; i < n && idxFound == -1; i++ {
+	idxFound = -1
+	i = 0
+	for i < n && idxFound == -1 {
 		if db[i].ID == idCari {
 			idxFound = i
 		}
+		i++
 	}
 
 	if idxFound == -1 {
@@ -192,30 +198,30 @@ func ubahDataSupplier(db *DatabaseSupplier, n int) {
 	fmt.Println("=====================================================")
 
 	fmt.Print("Nama Perusahaan Baru: ")
-	fmt.Scan(&db[idxFound].NamaPT)
+	fmt.Scan(&db[idxFound].namaPT)
 
 	fmt.Print("Nomor Telepon Baru: ")
-	fmt.Scan(&db[idxFound].DetailKontak.Telepon)
+	fmt.Scan(&db[idxFound].detailKontak.telepon)
 
 	fmt.Print("Email Baru: ")
-	fmt.Scan(&db[idxFound].DetailKontak.Email)
+	fmt.Scan(&db[idxFound].detailKontak.email)
 
 	fmt.Print("Lokasi Baru: ")
-	fmt.Scan(&db[idxFound].DetailKontak.Lokasi)
+	fmt.Scan(&db[idxFound].detailKontak.lokasi)
 
 	fmt.Print("Jenis Material Baru: ")
-	fmt.Scan(&db[idxFound].DetailLayanan.JenisMaterial)
+	fmt.Scan(&db[idxFound].detailLayanan.jenisMaterial)
 
 	fmt.Print("Rating Baru (0.0 - 5.0): ")
-	fmt.Scan(&db[idxFound].DetailLayanan.Rating)
+	fmt.Scan(&db[idxFound].detailLayanan.rating)
 
 	fmt.Print("Riwayat Order Baru: ")
-	fmt.Scan(&db[idxFound].DetailLayanan.RiwayatOrder)
+	fmt.Scan(&db[idxFound].detailLayanan.riwayatOrder)
 
 	fmt.Println("\n[BERHASIL] Data supplier berhasil diubah!")
 }
 
-func hapusDataSupplier(db *DatabaseSupplier, n *int) {
+func hapusDataSupplier(db *databaseSupplier, n *int) {
 	var cariID, idx, i int
 	var ketemu bool
 
@@ -253,7 +259,7 @@ func hapusDataSupplier(db *DatabaseSupplier, n *int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil dihapus!")
 }
 
-func tampilkanDataSupplier(db DatabaseSupplier, n int) {
+func tampilkanDataSupplier(db databaseSupplier, n int) {
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong.")
 		return
@@ -266,14 +272,14 @@ func tampilkanDataSupplier(db DatabaseSupplier, n int) {
 	for i := 0; i < n; i++ {
 		s := db[i]
 		fmt.Printf("%-5d | %-20s | %-15s | %-25s | %-15s | %-15s | %-6.1f | %-15d\n",
-			s.ID, s.NamaPT, s.DetailKontak.Telepon, s.DetailKontak.Email, s.DetailKontak.Lokasi, s.DetailLayanan.JenisMaterial, s.DetailLayanan.Rating, s.DetailLayanan.RiwayatOrder,
+			s.ID, s.namaPT, s.detailKontak.telepon, s.detailKontak.email, s.detailKontak.lokasi, s.detailLayanan.jenisMaterial, s.detailLayanan.rating, s.detailLayanan.riwayatOrder,
 		)
 	}
 	fmt.Println("=======================================================================================================================================")
 }
 
 //sequntial search
-func pencarianDataSupplier(db DatabaseSupplier, n int) {
+func pencarianDataSupplier(db databaseSupplier, n int) {
 	var pilihMetode int
 	var findData string
 	var found bool = false
@@ -297,9 +303,9 @@ func pencarianDataSupplier(db DatabaseSupplier, n int) {
 		fmt.Println("\n-- HASIL PENCARIAN --")
 
 		for i := 0; i < n; i++ {
-			if db[i].DetailKontak.Lokasi == findData {
+			if db[i].detailKontak.lokasi == findData {
 				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Jenis Material: %s | Rating: %.1f | Riwayat Order: %d\n",
-					db[i].ID, db[i].NamaPT, db[i].DetailKontak.Telepon, db[i].DetailKontak.Email, db[i].DetailLayanan.JenisMaterial, db[i].DetailLayanan.Rating, db[i].DetailLayanan.RiwayatOrder)
+					db[i].ID, db[i].namaPT, db[i].detailKontak.telepon, db[i].detailKontak.email, db[i].detailLayanan.jenisMaterial, db[i].detailLayanan.rating, db[i].detailLayanan.riwayatOrder)
 				found = true
 			}
 		}
@@ -314,9 +320,9 @@ func pencarianDataSupplier(db DatabaseSupplier, n int) {
 		fmt.Println("\n-- HASIL PENCARIAN --")
 
 		for i := 0; i < n; i++ {
-			if db[i].DetailLayanan.JenisMaterial == findData {
+			if db[i].detailLayanan.jenisMaterial == findData {
 				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Lokasi: %s | Rating: %.1f | Riwayat Order: %d\n",
-					db[i].ID, db[i].NamaPT, db[i].DetailKontak.Telepon, db[i].DetailKontak.Email, db[i].DetailKontak.Lokasi, db[i].DetailLayanan.Rating, db[i].DetailLayanan.RiwayatOrder)
+					db[i].ID, db[i].namaPT, db[i].detailKontak.telepon, db[i].detailKontak.email, db[i].detailKontak.lokasi, db[i].detailLayanan.rating, db[i].detailLayanan.riwayatOrder)
 				found = true
 			}
 		}
@@ -330,7 +336,7 @@ func pencarianDataSupplier(db DatabaseSupplier, n int) {
 }
 
 //insertion desc
-func pengurutanDataSupplier(db *DatabaseSupplier, n int) {
+func pengurutanDataSupplier(db *databaseSupplier, n int) {
 	var pass, i int
 	var temp supplier
 
@@ -357,13 +363,13 @@ func pengurutanDataSupplier(db *DatabaseSupplier, n int) {
 }
 
 func prioritas(kandidat, pembanding supplier) bool {
-	if kandidat.DetailLayanan.Rating != pembanding.DetailLayanan.Rating {
-		return kandidat.DetailLayanan.Rating > pembanding.DetailLayanan.Rating
+	if kandidat.detailLayanan.rating != pembanding.detailLayanan.rating {
+		return kandidat.detailLayanan.rating > pembanding.detailLayanan.rating
 	}
-	return kandidat.DetailLayanan.RiwayatOrder > pembanding.DetailLayanan.RiwayatOrder
+	return kandidat.detailLayanan.riwayatOrder > pembanding.detailLayanan.riwayatOrder
 }
 
-func tampilkanStatistik(db DatabaseSupplier, n int) {
+func tampilkanStatistik(db databaseSupplier, n int) {
 	var totalRating float64 = 0
 	var avgRating float64
 	var idxWilayah int
@@ -378,13 +384,13 @@ func tampilkanStatistik(db DatabaseSupplier, n int) {
 	fmt.Println("=====================================================")
 
 	for i := 0; i < n; i++ {
-		totalRating = totalRating + db[i].DetailLayanan.Rating
+		totalRating = totalRating + db[i].detailLayanan.rating
 	}
 	avgRating = totalRating / float64(n)
 	fmt.Printf("Rata-rata Skor Rating Mitra: %.2f\n", avgRating)
 
 	for i := 0; i < n; i++ {
-		lokasiSupplier = db[i].DetailKontak.Lokasi
+		lokasiSupplier = db[i].detailKontak.lokasi
 		ada = false
 		idxWilayah = -1
 
