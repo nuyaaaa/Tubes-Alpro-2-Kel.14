@@ -179,6 +179,7 @@ func ubahDataSupplier(db *databaseSupplier, n int) {
 	fmt.Print("\nMasukkan ID Supplier yang ingin diubah: ")
 	fmt.Scan(&idCari)
 
+	//pke metode sequential search buat nyari id
 	idxFound = -1
 	i = 0
 	for i < n && idxFound == -1 {
@@ -221,9 +222,9 @@ func ubahDataSupplier(db *databaseSupplier, n int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil diubah!")
 }
 
+//menghapus data yang udh ada di database, nyari data yang mau di ubah dari id nya
 func hapusDataSupplier(db *databaseSupplier, n *int) {
 	var cariID, idx, i int
-	var ketemu bool
 
 	if *n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa dihapus.")
@@ -234,14 +235,12 @@ func hapusDataSupplier(db *databaseSupplier, n *int) {
 	fmt.Println("=====================================================")
 	fmt.Print("Masukkan ID Supplier yang ingin dihapus: ")
 	fmt.Scan(&cariID)
-
+	//ini juga pke sequential search
 	idx = -1
-	ketemu = false
 	i = 0
-	for i < *n && !ketemu {
+	for i < *n && idx == -1 {
 		if db[i].ID == cariID {
 			idx = i
-			ketemu = true
 		}
 		i++
 	}
@@ -259,6 +258,7 @@ func hapusDataSupplier(db *databaseSupplier, n *int) {
 	fmt.Println("\n[BERHASIL] Data supplier berhasil dihapus!")
 }
 
+//nampilin semua data supplier yang udh ada di database
 func tampilkanDataSupplier(db databaseSupplier, n int) {
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong.")
@@ -270,15 +270,13 @@ func tampilkanDataSupplier(db databaseSupplier, n int) {
 	fmt.Println("---------------------------------------------------------------------------------------------------------------------------------------")
 
 	for i := 0; i < n; i++ {
-		s := db[i]
 		fmt.Printf("%-5d | %-20s | %-15s | %-25s | %-15s | %-15s | %-6.1f | %-15d\n",
-			s.ID, s.namaPT, s.detailKontak.telepon, s.detailKontak.email, s.detailKontak.lokasi, s.detailLayanan.jenisMaterial, s.detailLayanan.rating, s.detailLayanan.riwayatOrder,
+			db[i].ID, db[i].namaPT, db[i].detailKontak.telepon, db[i].detailKontak.email, db[i].detailKontak.lokasi, db[i].detailLayanan.jenisMaterial, db[i].detailLayanan.rating, db[i].detailLayanan.riwayatOrder,
 		)
 	}
 	fmt.Println("=======================================================================================================================================")
 }
 
-//sequntial search
 func pencarianDataSupplier(db databaseSupplier, n int) {
 	var pilihMetode int
 	var findData string
@@ -301,7 +299,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 		fmt.Print("Masukkan Lokasi yang ingin dicari: ")
 		fmt.Scan(&findData)
 		fmt.Println("\n-- HASIL PENCARIAN --")
-
+		//sequntial search buat nyari data yang lokasi nya sesuai sama inputan user
 		for i := 0; i < n; i++ {
 			if db[i].detailKontak.lokasi == findData {
 				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Jenis Material: %s | Rating: %.1f | Riwayat Order: %d\n",
@@ -318,7 +316,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 		fmt.Print("Masukkan Jenis Material yang ingin dicari: ")
 		fmt.Scan(&findData)
 		fmt.Println("\n-- HASIL PENCARIAN --")
-
+		//sequential search buat nyari data yang jenis material nya sesuai sama inputan user
 		for i := 0; i < n; i++ {
 			if db[i].detailLayanan.jenisMaterial == findData {
 				fmt.Printf("ID: %d | Nama PT: %s | Telepon: %s | Email: %s | Lokasi: %s | Rating: %.1f | Riwayat Order: %d\n",
@@ -335,7 +333,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 	}
 }
 
-//insertion desc
+//insertion desc, ngurutin data supplier berdasarkan rating tertinggi. klo rating sama, di urutin berdasarkan riwayat order terbanyak
 func pengurutanDataSupplier(db *databaseSupplier, n int) {
 	var pass, i int
 	var temp supplier
