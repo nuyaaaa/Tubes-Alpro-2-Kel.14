@@ -131,14 +131,12 @@ func tambahDataSupplier(db *databaseSupplier, n *int) {
 	isDuplicate := true
 
 	for isDuplicate {
-		fmt.Print("ID Supplier: ")
-		fmt.Scan(&idBaru)
-
+		idBaru = mintaInputAngka("ID Supplier: ")
 		isDuplicate = false
 
 		for i := 0; i < *n && !isDuplicate; i++ {
 			if db[i].ID == idBaru {
-				isDuplicate = true // Penanda diubah jika ditemukan ID yang sama
+				isDuplicate = true
 			}
 		}
 
