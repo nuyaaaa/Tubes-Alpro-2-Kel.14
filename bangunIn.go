@@ -70,16 +70,16 @@ func isiDataDummy(db *databaseSupplier, n *int) {
 
 //tampilan untuk mengoperasikan program
 func menuUtama(db *databaseSupplier, n *int) bool {
-	var input int
+	var input string
 
 	fmt.Println("_____________________________________________________")
 	fmt.Println("|                                                   |")
 	fmt.Println("|                  SELAMAT DATANG                   |")
-	fmt.Println("|                   DI BANGUNIN                     |")
+	fmt.Println("|                    DI BANGUNIN                    |")
 	fmt.Println("|___________________________________________________|")
 	fmt.Println()
 	fmt.Println("=====================================================")
-	fmt.Println("        BANGUNIN - DATABASE SUPPLIER MATERIAL       ")
+	fmt.Println("        BANGUNIN - DATABASE SUPPLIER MATERIAL        ")
 	fmt.Println("=====================================================")
 	fmt.Println("1. Tambah Data Supplier")
 	fmt.Println("2. Ubah Data Supplier")
@@ -94,28 +94,22 @@ func menuUtama(db *databaseSupplier, n *int) bool {
 
 	fmt.Scan(&input)
 
-	//buat error handling klo user masukin angka yang ga sesuai sama menu yang ada, nanti bakal keluar info buat milih menu yang tersedia
-	if input < 1 || input > 8 {
-		fmt.Println("\n[INFO] Pilihan menu tidak valid. Silakan pilih menu yang tersedia.")
-		return true
-	}
-
 	switch input {
-	case 1:
+	case "1":
 		tambahDataSupplier(db, n)
-	case 2:
+	case "2":
 		ubahDataSupplier(db, *n)
-	case 3:
+	case "3":
 		hapusDataSupplier(db, n)
-	case 4:
+	case "4":
 		tampilkanDataSupplier(*db, *n)
-	case 5:
+	case "5":
 		pencarianDataSupplier(*db, *n)
-	case 6:
+	case "6":
 		pengurutanDataSupplier(db, *n)
-	case 7:
+	case "7":
 		tampilkanStatistik(*db, *n)
-	case 8:
+	case "8":
 		fmt.Println("Terima kasih telah menggunakan BANGUNIN.")
 		return false
 	}
@@ -141,27 +135,40 @@ func tambahDataSupplier(db *databaseSupplier, n *int) {
 		fmt.Println("\n[GAGAL] ID Supplier sudah digunakan. Silakan masukkan ID yang berbeda.")
 		return
 	}
+	var idBaru int
+	isDuplicate := true
 
-	fmt.Print("Nama Perusahaan: ")
-	fmt.Scan(&db[*n].namaPT)
+	for isDuplicate {
+		fmt.Print("ID Supplier: ")
+		fmt.Scan(&idBaru)
 
-	fmt.Print("Nomor Telepon: ")
-	fmt.Scan(&db[*n].detailKontak.telepon)
+		isDuplicate = false
+
+		for i := 0; i < *n && !isDuplicate; i++ {
+			if db[i].ID == idBaru {
+				isDuplicate = true // Penanda diubah jika ditemukan ID yang sama
+			}
+		}
+
+		if isDuplicate {
+			fmt.Println("[ERROR] ID Supplier sudah terdaftar! Silakan masukkan ID yang berbeda.")
+		} else {
+			db[*n].ID = idBaru
+		}
+	}
+
+	db[*n].namaPT = mintaInputHuruf("Nama Perusahaan: ")
+
+	db[*n].detailKontak.telepon = inputValidTelepon("Nomor Telepon: ")
 
 	fmt.Print("Email: ")
 	fmt.Scan(&db[*n].detailKontak.email)
 
-	fmt.Print("Lokasi: ")
-	fmt.Scan(&db[*n].detailKontak.lokasi)
+	db[*n].detailKontak.lokasi = mintaInputHuruf("Lokasi: ")
+	db[*n].detailLayanan.jenisMaterial = mintaInputHuruf("Jenis Material: ")
 
-	fmt.Print("Jenis Material: ")
-	fmt.Scan(&db[*n].detailLayanan.jenisMaterial)
-
-	fmt.Print("Rating (0.0 - 5.0): ")
-	fmt.Scan(&db[*n].detailLayanan.rating)
-
-	fmt.Print("Riwayat Order: ")
-	fmt.Scan(&db[*n].detailLayanan.riwayatOrder)
+	db[*n].detailLayanan.rating = mintaInputFloat("Rating (0.0 - 5.0): ")
+	db[*n].detailLayanan.riwayatOrder = mintaInputAngka("Riwayat Order: ")
 
 	*n++
 
@@ -209,26 +216,18 @@ func ubahDataSupplier(db *databaseSupplier, n int) {
 	fmt.Printf("           UBAH DATA SUPPLIER (ID: %d)               \n", idCari)
 	fmt.Println("=====================================================")
 
-	fmt.Print("Nama Perusahaan Baru: ")
-	fmt.Scan(&db[idxFound].namaPT)
+	db[idxFound].namaPT = mintaInputHuruf("Nama Perusahaan Baru: ")
 
-	fmt.Print("Nomor Telepon Baru: ")
-	fmt.Scan(&db[idxFound].detailKontak.telepon)
+	db[idxFound].detailKontak.telepon = inputValidTelepon("Nomor Telepon Baru: ")
 
 	fmt.Print("Email Baru: ")
 	fmt.Scan(&db[idxFound].detailKontak.email)
 
-	fmt.Print("Lokasi Baru: ")
-	fmt.Scan(&db[idxFound].detailKontak.lokasi)
+	db[idxFound].detailKontak.lokasi = mintaInputHuruf("Lokasi Baru: ")
+	db[idxFound].detailLayanan.jenisMaterial = mintaInputHuruf("Jenis Material Baru: ")
 
-	fmt.Print("Jenis Material Baru: ")
-	fmt.Scan(&db[idxFound].detailLayanan.jenisMaterial)
-
-	fmt.Print("Rating Baru (0.0 - 5.0): ")
-	fmt.Scan(&db[idxFound].detailLayanan.rating)
-
-	fmt.Print("Riwayat Order Baru: ")
-	fmt.Scan(&db[idxFound].detailLayanan.riwayatOrder)
+	db[idxFound].detailLayanan.rating = mintaInputFloat("Rating Baru (0.0 - 5.0): ")
+	db[idxFound].detailLayanan.riwayatOrder = mintaInputAngka("Riwayat Order Baru: ")
 
 	fmt.Println("\n[BERHASIL] Data supplier berhasil diubah!")
 }
@@ -246,6 +245,8 @@ func hapusDataSupplier(db *databaseSupplier, n *int) {
 	fmt.Println("=====================================================")
 	fmt.Print("Masukkan ID Supplier yang ingin dihapus: ")
 	fmt.Scan(&cariID)
+
+	cariID = mintaInputAngka("Masukkan ID Supplier yang ingin dihapus: ")
 
 	//ini juga pke sequential search
 	idx = -1
@@ -306,6 +307,9 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 	fmt.Println("3. Kembali ke menu utama")
 	fmt.Println("Pilih metode pencarian (1-3): ")
 	fmt.Scan(&pilihMetode)
+	fmt.Println("Pilih metode pencarian (1-2): ")
+
+	pilihMetode = mintaInputAngka("Pilih metode pencarian (1-2): ")
 
 	if pilihMetode < 1 || pilihMetode > 3 {
 		fmt.Println("\n[INFO] Pilihan metode tidak valid. Silakan pilih 1, 2, atau 3.")
@@ -315,8 +319,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 
 	switch pilihMetode {
 	case 1:
-		fmt.Print("Masukkan Lokasi yang ingin dicari: ")
-		fmt.Scan(&findData)
+		findData = mintaInputHuruf("Masukkan Lokasi yang ingin dicari: ")
 		fmt.Println("\n-- HASIL PENCARIAN --")
 
 		//sequntial search buat nyari data yang lokasi nya sesuai sama inputan user
@@ -333,8 +336,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 		}
 
 	case 2:
-		fmt.Print("Masukkan Jenis Material yang ingin dicari: ")
-		fmt.Scan(&findData)
+		findData = mintaInputHuruf("Masukkan Jenis Material yang ingin dicari: ")
 		fmt.Println("\n-- HASIL PENCARIAN --")
 
 		//binarysearch buat nyari data yang jenis material nya sesuai sama inputan user
@@ -514,3 +516,119 @@ func tampilkanStatistik(db databaseSupplier, n int) {
 }
 
 //klo masukin sesuatu ga sesuai sama tipe datanya, nanti bikin error handling
+// Validasi Huruf: Memastikan input tidak mengandung angka
+func mintaInputHuruf(pesan string) string {
+	var input string
+	var valid bool = false
+
+	for !valid {
+		fmt.Print(pesan)
+		fmt.Scan(&input)
+		valid = true
+
+		for i := 0; i < len(input); i++ {
+			if input[i] >= '0' && input[i] <= '9' {
+				valid = false
+			}
+		}
+
+		if !valid {
+			fmt.Println("   [ERROR] Input tidak boleh mengandung angka! Coba lagi.")
+		}
+	}
+	return input
+}
+
+// Validasi Angka: input tidak boleh huruf
+func mintaInputAngka(pesan string) int {
+	var input string
+	var valid bool = false
+	var hasil int
+
+	for !valid {
+		fmt.Print(pesan)
+		fmt.Scan(&input)
+		valid = true
+		hasil = 0
+
+		for i := 0; i < len(input); i++ {
+			if input[i] < '0' || input[i] > '9' {
+				valid = false
+			} else {
+				hasil = hasil*10 + int(input[i]-'0')
+			}
+		}
+
+		if !valid {
+			fmt.Println("   [ERROR] Input harus berupa angka penuh! Coba lagi.")
+		}
+	}
+	return hasil
+}
+
+// Validasi Telepon: input harus angka
+func inputValidTelepon(pesan string) string {
+	var input string
+	var valid bool = false
+
+	for !valid {
+		fmt.Print(pesan)
+		fmt.Scan(&input)
+		valid = true
+
+		for i := 0; i < len(input); i++ {
+			if (input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') {
+				valid = false
+			}
+		}
+
+		if !valid {
+			fmt.Println("   [ERROR] Nomor telepon tidak boleh mengandung huruf! Coba lagi.")
+		}
+	}
+	return input
+}
+
+// Validasi Float / koma
+func mintaInputFloat(pesan string) float64 {
+	var input string
+	var hasil float64
+	var valid bool = false
+
+	for !valid {
+		fmt.Print(pesan)
+		fmt.Scan(&input)
+
+		valid = true
+		hasil = 0.0
+		var pembagi float64 = 10.0
+		var adaTitik bool = false
+
+		for i := 0; i < len(input); i++ {
+			if input[i] == '.' {
+				if adaTitik {
+					valid = false
+				}
+				adaTitik = true
+			} else if input[i] >= '0' && input[i] <= '9' {
+				digit := float64(input[i] - '0')
+
+				if !adaTitik {
+					hasil = (hasil * 10.0) + digit
+				} else {
+					hasil = hasil + (digit / pembagi)
+					pembagi = pembagi * 10.0
+				}
+			} else {
+				valid = false
+			}
+		}
+		if valid && adaTitik && hasil >= 0.0 && hasil <= 5.0 {
+			valid = true
+		} else {
+			valid = false
+			fmt.Println("   [ERROR] Input wajib menggunakan format desimal berpola titik (contoh: 4.0)! Coba lagi.")
+		}
+	}
+	return hasil
+}
