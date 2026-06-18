@@ -226,8 +226,6 @@ func hapusDataSupplier(db *databaseSupplier, n *int) {
 	fmt.Println("\n=====================================================")
 	fmt.Println(" 		          HAPUS DATA SUPPLIER                 ")
 	fmt.Println("=====================================================")
-	fmt.Print("Masukkan ID Supplier yang ingin dihapus: ")
-	fmt.Scan(&cariID)
 
 	cariID = mintaInputAngka("Masukkan ID Supplier yang ingin dihapus: ")
 
@@ -288,11 +286,8 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 	fmt.Println("1. Cari berdasarkan Lokasi")
 	fmt.Println("2. Cari berdasarkan Jenis Material")
 	fmt.Println("3. Kembali ke menu utama")
-	fmt.Println("Pilih metode pencarian (1-3): ")
-	fmt.Scan(&pilihMetode)
-	fmt.Println("Pilih metode pencarian (1-2): ")
 
-	pilihMetode = mintaInputAngka("Pilih metode pencarian (1-2): ")
+	pilihMetode = mintaInputAngka("Pilih metode pencarian (1-3): ")
 
 	if pilihMetode < 1 || pilihMetode > 3 {
 		fmt.Println("\n[INFO] Pilihan metode tidak valid. Silakan pilih 1, 2, atau 3.")
@@ -317,6 +312,7 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 		if !found {
 			fmt.Println("Data supplier dengan lokasi tersebut tidak ditemukan.")
 		}
+		pencarianDataSupplier(db, n)
 
 	case 2:
 		findData = mintaInputHuruf("Masukkan Jenis Material yang ingin dicari: ")
@@ -346,13 +342,14 @@ func pencarianDataSupplier(db databaseSupplier, n int) {
 		} else {
 			fmt.Println("Data supplier dengan jenis material tersebut tidak ditemukan.")
 		}
+		pencarianDataSupplier(db, n)
 
 	case 3:
 		return
 	}
 }
 
-//insertion sort desc buat ngurutin data biar kepake di binary
+//insertion sort asc (A-Z) buat ngurutin data biar kepake di binary
 func insertSort(db *databaseSupplier, n int) {
 	var pass, i int
 	var temp supplier
@@ -364,7 +361,7 @@ func insertSort(db *databaseSupplier, n int) {
 	for pass <= n-1 {
 		i = pass
 		temp = db[pass]
-		for i > 0 && temp.detailLayanan.rating > db[i-1].detailLayanan.rating {
+		for i > 0 && temp.detailLayanan.jenisMaterial < db[i-1].detailLayanan.jenisMaterial {
 			db[i] = db[i-1]
 			i--
 		}
@@ -383,9 +380,8 @@ func pengurutanDataSupplier(db *databaseSupplier, n int) {
 	fmt.Println("1. Mengurutkan data supplier berdasarkan rating tertinggi")
 	fmt.Println("2. Mengurutkan data supplier berdasarkan rating terendah")
 	fmt.Println("3. Kembali ke menu utama")
-	fmt.Print("Pilih metode pengurutan (1-3): ")
-	var pilihMetode int
-	fmt.Scan(&pilihMetode)
+
+	pilihMetode := mintaInputAngka("Pilih metode pengurutan (1-3): ")
 
 	if n == 0 {
 		fmt.Println("\n[INFO] Data supplier masih kosong. Tidak ada data yang bisa diurutkan.")
