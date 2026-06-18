@@ -127,14 +127,6 @@ func tambahDataSupplier(db *databaseSupplier, n *int) {
 	fmt.Println("                TAMBAH DATA SUPPLIER")
 	fmt.Println("=====================================================")
 
-	fmt.Print("ID Supplier: ")
-	fmt.Scan(&db[*n].ID)
-
-	//nambahin kondisi dimana klo id yang di inputkan(baru) sama/udh ada di database, maka disuruh input ulang
-	if adaID(db, *n, db[*n].ID) {
-		fmt.Println("\n[GAGAL] ID Supplier sudah digunakan. Silakan masukkan ID yang berbeda.")
-		return
-	}
 	var idBaru int
 	isDuplicate := true
 
@@ -173,15 +165,6 @@ func tambahDataSupplier(db *databaseSupplier, n *int) {
 	*n++
 
 	fmt.Println("\n[BERHASIL] Data supplier berhasil ditambahkan!")
-}
-
-func adaID(db *databaseSupplier, n int, id int) bool {
-	for i := 0; i < n; i++ {
-		if db[i].ID == id {
-			return true
-		}
-	}
-	return false
 }
 
 //mengubah data supplier yang sudah ada berdasarkan id
